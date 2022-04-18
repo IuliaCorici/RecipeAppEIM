@@ -34,7 +34,7 @@ class MyRecipes : AppCompatActivity() {
             Toast.makeText(this, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show()
             for (recipe in savedRecipes) {
                 if (recipe.label.toString() === parent.getItemAtPosition(position).toString()) {
-                    val intent = Intent(this, RecipeDetailsActivity::class.java)
+                    val intent = Intent(this, SavedRecipeDetails::class.java)
                     intent.putExtra("label", recipe.label.toString())
                     intent.putExtra("sourceUrl", recipe.url.toString())
                     intent.putExtra("source", recipe.source.toString())
