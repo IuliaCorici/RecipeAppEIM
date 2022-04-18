@@ -27,12 +27,9 @@ class RecipeDetailsActivity : AppCompatActivity() {
 
     // Recipe info
     var url : String? = ""
-    var label : String? = ""
+    var title : String? = ""
     var ingredients : MutableList<String>? = null
-    var source : String? = ""
-    var savedRecipes: ArrayList<Recipe> = ArrayList()
-
-
+    var savedRecipes: ArrayList<RecipeSpoonacular> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,13 +39,12 @@ class RecipeDetailsActivity : AppCompatActivity() {
         labelText = findViewById(R.id.labelText)
         scrollView = findViewById(R.id.scrollView)
         ingredientText = scrollView.findViewById(R.id.ingredientText)
-        sourceButton = findViewById(R.id.sourceButton)
         saveButton = findViewById(R.id.saveButton)
 
         // LoadData and see it this recipe is already saved. Call saveData()
         saveButton.setOnClickListener() {
             loadData()
-            if (!savedRecipes.any{ recipe -> recipe.label == label}) {
+            if (!savedRecipes.any{ recipe -> recipe.title == title}) {
                 Toast.makeText(this@RecipeDetailsActivity, "Recipe saved", Toast.LENGTH_SHORT).show()
                 saveData()
             } else {
@@ -59,24 +55,17 @@ class RecipeDetailsActivity : AppCompatActivity() {
         val intent = intent
         val extras = intent.extras
         if (extras != null) {
-            label = extras.getString("label")
-            source = extras.getString("source")
-            url = extras.getString("sourceUrl").toString()
-            ingredients =  extras.getString("ingredientLines")?.split("#")?.toMutableList()
+            title = extras.getString("title")
+            ingredients =  extras.getString("ingredientLines")?.split("NEW")?.toMutableList()
 
             ingredientText.text = ingredients?.joinToString("\n\n")
-            labelText.text = label
-            sourceButton.text = source
-
-            sourceButton.setOnClickListener() {
-                sourceButtonClicked(it)
-            }
+            labelText.text = title
         }
     }
 
     // Add new recipe to savedRecipes and save savedRecipes
     private fun saveData() {
-        val myRecipeObject = Recipe(label = label, ingredientLines = ingredients, url = url, source = source)
+        val myRecipeObject = RecipeSpoonacular(title = title)
         savedRecipes.add(myRecipeObject)
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -88,16 +77,9 @@ class RecipeDetailsActivity : AppCompatActivity() {
     private fun loadData() {
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("recipeList", ArrayList<String>().toString())
-        val collectionType = object : TypeToken<ArrayList<Recipe>>() {}.type
+        val collectionType = object : TypeToken<ArrayList<RecipeSpoonacular>>() {}.type
         savedRecipes = Gson().fromJson(json, collectionType)
         Log.d("GOT RECIPES", savedRecipes.toString())
-    }
-
-    // Start activity on browser with url
-    private fun sourceButtonClicked(button: View) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
     }
 
     override fun onBackPressed() {

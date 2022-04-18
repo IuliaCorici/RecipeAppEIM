@@ -15,7 +15,7 @@ import com.google.gson.reflect.TypeToken
 class MyRecipes : AppCompatActivity() {
     lateinit var listView : ListView
     lateinit var adapter : ArrayAdapter<String>
-    var savedRecipes: ArrayList<Recipe> = ArrayList()
+    var savedRecipes: ArrayList<RecipeSpoonacular> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,12 +33,10 @@ class MyRecipes : AppCompatActivity() {
         listView.setOnItemClickListener{ parent, _, position, _ ->
             Toast.makeText(this, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show()
             for (recipe in savedRecipes) {
-                if (recipe.label.toString() === parent.getItemAtPosition(position).toString()) {
+                if (recipe.title.toString() === parent.getItemAtPosition(position).toString()) {
                     val intent = Intent(this, SavedRecipeDetails::class.java)
-                    intent.putExtra("label", recipe.label.toString())
-                    intent.putExtra("sourceUrl", recipe.url.toString())
-                    intent.putExtra("source", recipe.source.toString())
-                    intent.putExtra("ingredientLines", recipe.ingredientLinesToString())
+                    intent.putExtra("title", recipe.title.toString())
+                    intent.putExtra("ingredientLines", recipe.SpoonecularIngredientToString())
                     startActivity(intent)
                 }
             }
@@ -55,7 +53,7 @@ class MyRecipes : AppCompatActivity() {
     fun loadData() {
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("recipeList", ArrayList<String>().toString())
-        val collectionType = object : TypeToken<ArrayList<Recipe>>() {}.type
+        val collectionType = object : TypeToken<ArrayList<RecipeSpoonacular>>() {}.type
         savedRecipes = Gson().fromJson(json, collectionType)
         Log.d("GOT RECIPES", savedRecipes.toString())
 

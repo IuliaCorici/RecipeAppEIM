@@ -23,45 +23,33 @@ class SavedRecipeDetails : AppCompatActivity() {
     lateinit var scrollView : ScrollView
     lateinit var ingredientText : TextView
     lateinit var deleteButton : Button
-    lateinit var sourceButton : Button
 
     // Recipe info
     var url : String? = ""
-    var label : String? = ""
+    var title : String? = ""
     var ingredients : MutableList<String>? = null
-    var source : String? = ""
-    var savedRecipes: ArrayList<Recipe> = ArrayList()
+    var savedRecipes: ArrayList<RecipeSpoonacular> = ArrayList()
 
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_saved_recipe_details)
-        Log.d("SavedRecipeDetails", "onCreate()")
-
         loadData()
 
         labelText = findViewById(R.id.labelText)
         scrollView = findViewById(R.id.scrollView)
         ingredientText = scrollView.findViewById(R.id.ingredientText)
-        sourceButton = findViewById(R.id.sourceButton)
         deleteButton = findViewById(R.id.deleteButton)
 
         val intent = intent
         val extras = intent.extras
         if (extras != null) {
-            label = extras.getString("label")
-            source = extras.getString("source")
-            url = extras.getString("sourceUrl").toString()
-            ingredients =  extras.getString("ingredientLines")?.split("#")?.toMutableList()
+            title = extras.getString("title")
+            ingredients =  extras.getString("ingredientLines")?.split("NEW")?.toMutableList()
 
             ingredientText.text = ingredients?.joinToString("\n\n")
-            labelText.text = label
-            sourceButton.text = source
-
-            sourceButton.setOnClickListener() {
-                sourceButtonClicked(it)
-            }
+            labelText.text = title
 
             deleteButton.setOnClickListener() {
                 deleteRecipe(it)
@@ -70,14 +58,13 @@ class SavedRecipeDetails : AppCompatActivity() {
     }
 
     private fun deleteRecipe(button: View) {
-        val newSavedRecipes : ArrayList<Recipe> = ArrayList()
-        savedRecipes.filterTo(newSavedRecipes, {it.label != label})
+        val newSavedRecipes : ArrayList<RecipeSpoonacular> = ArrayList()
+        savedRecipes.filterTo(newSavedRecipes, {it.title != title})
         savedRecipes = newSavedRecipes
         saveData()
         this.finish()
     }
 
-    // Add new recipe to savedRecipes and save savedRecipes
     private fun saveData() {
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -89,16 +76,9 @@ class SavedRecipeDetails : AppCompatActivity() {
     private fun loadData() {
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val json = sharedPreferences.getString("recipeList", ArrayList<String>().toString())
-        val collectionType = object : TypeToken<ArrayList<Recipe>>() {}.type
+        val collectionType = object : TypeToken<ArrayList<RecipeSpoonacular>>() {}.type
         savedRecipes = Gson().fromJson(json, collectionType)
         Log.d("GOT RECIPES", savedRecipes.toString())
-    }
-
-    // Start activity on browser with url
-    private fun sourceButtonClicked(button: View) {
-        val intent = Intent(Intent.ACTION_VIEW)
-        intent.data = Uri.parse(url)
-        startActivity(intent)
     }
 
     override fun onRestart() {

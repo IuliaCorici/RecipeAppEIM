@@ -1,16 +1,20 @@
 package com.example.eim_app
 
 import android.content.Intent
-import android.os.AsyncTask
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.View
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import org.json.JSONObject
+
 
 class SearchActivity : AppCompatActivity() {
     lateinit var listView : ListView
-    var listItems :  ArrayList<Recipe> = ArrayList()
+    var listItems :  ArrayList<RecipeSpoonacular> = ArrayList()
 
     lateinit var adapter : ArrayAdapter<String>
 
@@ -19,10 +23,9 @@ class SearchActivity : AppCompatActivity() {
     lateinit var searchButton : Button
     lateinit var innerLayout : LinearLayout
 
-    // How many items are showed to user. Default is 0-15
+
+    // How many items are showed to user. Default is 0-10.
     lateinit var numberItems : TextView
-    private var min : Int = 0
-    private var max : Int = 15
 
     private var searchWord : String = ""
 
@@ -44,16 +47,13 @@ class SearchActivity : AppCompatActivity() {
         adapter = ArrayAdapter(this, R.layout.item, R.id.myTextView, ArrayList<String>())
         listView.adapter = adapter
 
-        // Each item on listview has onclick listener that starts RecipeDetailsActivity
         listView.setOnItemClickListener{ parent, _, position, _ ->
             Toast.makeText(this, "" + parent.getItemAtPosition(position), Toast.LENGTH_SHORT).show()
             for (recipe in listItems) {
-                if (recipe.label.toString() === parent.getItemAtPosition(position).toString()) {
+                if (recipe.title.toString() === parent.getItemAtPosition(position).toString()) {
                     val intent = Intent(this, RecipeDetailsActivity::class.java)
-                    intent.putExtra("label", recipe.label.toString())
-                    intent.putExtra("sourceUrl", recipe.url.toString())
-                    intent.putExtra("source", recipe.source.toString())
-                    intent.putExtra("ingredientLines", recipe.ingredientLinesToString())
+                    intent.putExtra("title", recipe.title.toString())
+                    intent.putExtra("ingredientLines", recipe.SpoonecularIngredientToString())
                     startActivity(intent)
                 }
             }
@@ -61,34 +61,34 @@ class SearchActivity : AppCompatActivity() {
     }
 
     private fun searchClicked(button: View) {
-        numberItems.text = "Showing results: ${min} - ${max}"
+        numberItems.text = "Showing results"
         searchWord = searchBar.text.toString()
         searchRecipes()
     }
 
 
     private fun searchRecipes() {
-        val yourAppId = "733a1d49"
-        val yourAppKey = "7ee8ff5ee0fbcd36346bd22cda06d6ca"
-        val url = "https://api.edamam.com/search?q=${searchWord}&app_id=${yourAppId}&app_key=${yourAppKey}&&from=${min}&to=${max}&calories=591-722&health=alcohol-free"
+        val url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=${searchWord}&number=10&apiKey=7ade310266e44c14990e59f6a235a038"
 
         downloadUrlAsync(this, url) { it ->
             // Clear existing lists
             adapter.clear()
             listItems.clear()
 
-            // Get new recipes
-            val mp = ObjectMapper()
-            val myObject: RecipeJsonObject
-            myObject = mp.readValue(it, RecipeJsonObject::class.java)
-            val recipes: MutableList<Hit>?
-            recipes = myObject.hits
+            Log.d("GOT RECIPES", it)
 
-            // Add new recipes to list
-            recipes?.forEach() {
+            val gson = Gson()
+            val arrayTutorialType = object : TypeToken<Array<RecipeSpoonacular>>() {}.type
+            var recipesSpoonacular: Array<RecipeSpoonacular> = gson.fromJson(it, arrayTutorialType)
+            recipesSpoonacular.forEachIndexed  { idx, tut -> Log.d("Recipe","> Item ${idx}:\n${tut}") }
+
+
+            recipesSpoonacular?.forEach() {
                 adapter.add(it.toString())
-                it.recipe?.let { it1 -> listItems.add(it1) }
+                listItems.add(it)
             }
         }
+
+
     }
 }
