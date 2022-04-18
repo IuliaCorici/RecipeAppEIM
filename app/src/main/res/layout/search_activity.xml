@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C3DF9F"
+
+    android:orientation="vertical"
+    android:textAlignment="center"
+    tools:context=".MainActivity">
+
+    <LinearLayout
+        android:id="@+id/innerLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <EditText
+
+            android:id="@+id/searchBar"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:hint="Search recipes"
+            android:textColorLink="#59925A"
+            android:textCursorDrawable="?android:attr/textCursorDrawable"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/searchButton"
+            android:layout_width="46dp"
+            android:layout_height="wrap_content"
+            android:background="#C3DF9F"
+            android:drawableLeft="@drawable/ic_baseline_search_24dp"
+
+            />
+    </LinearLayout>
+
+
+    <TextView
+        android:id="@+id/howManyItems"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:fontFamily="casual"
+        android:text="Showing results: 1-10"
+        android:textColor="#59925A"
+        android:textColorLink="#59925A"
+        android:textSize="18sp"
+        android:textStyle="bold|italic" />
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+
+        android:layout_height="match_parent"
+        android:layout_margin="10dp"
+        android:background="#E3EFDB" />
+
+</LinearLayout>

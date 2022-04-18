@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">EIM_App</string>
+    <string name="my_recipes_button_text">MY RECIPES</string>
+    <string name="main_activity_heading_text">Check out your new great helper in the kitchen!</string>
+    <string name="search_recipe_button_text">SEARCH FOR THE NEWEST RECIPES!</string>
+    <string name="search_recipes">Search recipes</string>
+    <string name="ingredients">Ingredients:</string>
+    <string name="save_this_recipe">Save this recipe</string>
+    <string name="saved_recipes">SAVED RECIPES</string>
+</resources>
