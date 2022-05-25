@@ -14,11 +14,9 @@ import org.json.JSONObject
 
 class SearchActivity : AppCompatActivity() {
     lateinit var listView : ListView
+    var listRecipeIds: ArrayList<RecipeId> = ArrayList()
     var listItems :  ArrayList<RecipeSpoonacular> = ArrayList()
-
     lateinit var adapter : ArrayAdapter<String>
-
-
     lateinit var searchBar : EditText
     lateinit var searchButton : Button
     lateinit var innerLayout : LinearLayout
@@ -26,14 +24,12 @@ class SearchActivity : AppCompatActivity() {
 
     // How many items are showed to user. Default is 0-10.
     lateinit var numberItems : TextView
-
     private var searchWord : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.search_activity)
         listView = findViewById(R.id.listView)
-
         innerLayout = findViewById(R.id.innerLayout)
         searchBar = innerLayout.findViewById(R.id.searchBar)
         searchButton = innerLayout.findViewById(R.id.searchButton)
@@ -42,8 +38,6 @@ class SearchActivity : AppCompatActivity() {
         }
 
         numberItems = findViewById(R.id.howManyItems)
-
-
         adapter = ArrayAdapter(this, R.layout.item, R.id.myTextView, ArrayList<String>())
         listView.adapter = adapter
 
@@ -54,6 +48,10 @@ class SearchActivity : AppCompatActivity() {
                     val intent = Intent(this, RecipeDetailsActivity::class.java)
                     intent.putExtra("title", recipe.title.toString())
                     intent.putExtra("ingredientLines", recipe.SpoonecularIngredientToString())
+                    intent.putExtra("time", recipe.readyInMinutes.toString())
+                    intent.putExtra("sourceUrl", recipe.sourceUrl)
+                    intent.putExtra("summary", recipe.summary)
+                    intent.putExtra("image", recipe.image)
                     startActivity(intent)
                 }
             }
@@ -68,27 +66,44 @@ class SearchActivity : AppCompatActivity() {
 
 
     private fun searchRecipes() {
-        val url = "https://api.spoonacular.com/recipes/findByIngredients?ingredients=${searchWord}&number=10&apiKey=7ade310266e44c14990e59f6a235a038"
+        val url =
+            "https://api.spoonacular.com/recipes/findByIngredients?ingredients=${searchWord}&number=10&apiKey=00aa3e5f53d94aacb817e1cb5f2578c9"
 
         downloadUrlAsync(this, url) { it ->
             // Clear existing lists
             adapter.clear()
             listItems.clear()
 
-            Log.d("GOT RECIPES", it)
-
             val gson = Gson()
-            val arrayTutorialType = object : TypeToken<Array<RecipeSpoonacular>>() {}.type
-            var recipesSpoonacular: Array<RecipeSpoonacular> = gson.fromJson(it, arrayTutorialType)
-            recipesSpoonacular.forEachIndexed  { idx, tut -> Log.d("Recipe","> Item ${idx}:\n${tut}") }
+            val arrayTutorialType = object : TypeToken<Array<RecipeId>>() {}.type
+            val recipesSpoonacular: Array<RecipeId> = gson.fromJson<Array<RecipeId>>(it, arrayTutorialType)
+
+            recipesSpoonacular.forEach() {
+                listRecipeIds.add(it)
+            }
 
 
-            recipesSpoonacular?.forEach() {
-                adapter.add(it.toString())
-                listItems.add(it)
+            searchRecipeById()
+        }
+    }
+
+    private fun searchRecipeById() {
+        for (recipeId in listRecipeIds) {
+            val url =
+                "https://api.spoonacular.com/recipes/${recipeId.toString()}/information?apiKey=00aa3e5f53d94aacb817e1cb5f2578c9&includeNutrition=true"
+
+            downloadUrlAsync(this, url) { it ->
+
+                val gson = Gson()
+                val tutorialType = object : TypeToken<RecipeSpoonacular>() {}.type
+                val recipesSpoonacular: RecipeSpoonacular = gson.fromJson(it, tutorialType)
+                adapter.add(recipesSpoonacular.toString())
+                listItems.add(recipesSpoonacular)
+
             }
         }
-
-
     }
+
+
+
 }

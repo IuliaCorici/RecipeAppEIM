@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#E3E4D2"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     tools:context=".RecipeDetailsActivity">
 
@@ -22,6 +23,13 @@
 
     </TextView>
 
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="216dp"
+        android:layout_height="100dp"
+        android:background="#0FD7CEDC"
+        android:contentDescription="TODO" />
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="39dp"
@@ -38,34 +46,75 @@
         android:layout_height="wrap_content"
         android:fillViewport="true">
 
-        <TextView
-            android:id="@+id/ingredientText"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/buttonPanel"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:fontFamily="cursive"
-            android:textAlignment="center"
-            android:textColor="#1B1C1C"
-            android:textSize="16sp" />
+            android:gravity="center"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/ingredientText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:textAlignment="center"
+                android:textColor="#1B1C1C"
+                android:textSize="16sp" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="39dp"
+                android:fontFamily="cursive"
+                android:text="Summary"
+                android:textAlignment="center"
+                android:textColor="#161717"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/summaryText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="cursive"
+                android:textAlignment="center"
+                android:textColor="#1B1C1C"
+                android:textSize="16sp" />
+
+            <Button
+                android:id="@+id/timeButton"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_button"
+                android:fontFamily="casual"
+                android:text="Time for this recipe"
+                android:textStyle="bold" />
+
+
+            <Button
+                android:id="@+id/sourceButton"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:layout_gravity="left"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_button_yellow"
+                android:fontFamily="casual"
+                android:includeFontPadding="false"
+                android:text="More info"
+                android:textStyle="bold" />
+
+            <Button
+                android:id="@+id/saveButton"
+                android:layout_width="190dp"
+                android:layout_height="match_parent"
+                android:layout_margin="5dp"
+                android:background="@drawable/rounded_button"
+                android:fontFamily="casual"
+                android:text="@string/save_this_recipe"
+                android:textStyle="bold" />
+        </LinearLayout>
     </ScrollView>
-
-
-    <LinearLayout
-        android:id="@+id/buttonPanel"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center">
-
-
-        <Button
-            android:id="@+id/saveButton"
-            android:layout_width="173dp"
-            android:layout_height="match_parent"
-            android:layout_margin="5dp"
-            android:background="@drawable/rounded_button"
-            android:fontFamily="casual"
-            android:text="@string/save_this_recipe"
-            android:textStyle="bold" />
-    </LinearLayout>
 
 
 </LinearLayout>

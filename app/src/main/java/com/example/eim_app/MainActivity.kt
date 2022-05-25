@@ -14,7 +14,6 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-
         myRecipes = findViewById(R.id.my_recipes_button)
         myRecipes.setOnClickListener() {
             changeActivityToMyRecipes(it)

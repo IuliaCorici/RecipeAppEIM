@@ -7,12 +7,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -24,12 +21,18 @@ class RecipeDetailsActivity : AppCompatActivity() {
     lateinit var ingredientText : TextView
     lateinit var saveButton : Button
     lateinit var sourceButton : Button
+    lateinit var timeButton : Button
+    lateinit var image : ImageView
+    lateinit var summaryText: TextView
 
     // Recipe info
-    var url : String? = ""
+    var source : String? = ""
     var title : String? = ""
     var ingredients : MutableList<String>? = null
     var savedRecipes: ArrayList<RecipeSpoonacular> = ArrayList()
+    var summary: String? = ""
+    var time: Int? = 0
+    var imageUrl: String? = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,6 +43,10 @@ class RecipeDetailsActivity : AppCompatActivity() {
         scrollView = findViewById(R.id.scrollView)
         ingredientText = scrollView.findViewById(R.id.ingredientText)
         saveButton = findViewById(R.id.saveButton)
+        sourceButton = findViewById(R.id.sourceButton)
+        timeButton = findViewById(R.id.timeButton)
+        image = findViewById(R.id.imageView)
+        summaryText = scrollView.findViewById(R.id.summaryText)
 
         // LoadData and see it this recipe is already saved. Call saveData()
         saveButton.setOnClickListener() {
@@ -57,15 +64,27 @@ class RecipeDetailsActivity : AppCompatActivity() {
         if (extras != null) {
             title = extras.getString("title")
             ingredients =  extras.getString("ingredientLines")?.split("NEW")?.toMutableList()
-
-            ingredientText.text = ingredients?.joinToString("\n\n")
+            summary = extras.getString("summary")
+            source = extras.getString("sourceUrl")
+            val content = ingredients?.joinToString("\n\n")
+            ingredientText.text = content
+            summaryText.text = summary
             labelText.text = title
+            time = extras.getString("time")?.toInt()
+            timeButton.text = extras.getString("time")
+            imageUrl = extras.getString("image")
+
+            Glide.with(this).load(imageUrl).into(image);
+            sourceButton.setOnClickListener() {
+                sourceButtonClicked(it)
+            }
         }
     }
 
     // Add new recipe to savedRecipes and save savedRecipes
     private fun saveData() {
-        val myRecipeObject = RecipeSpoonacular(title = title)
+        val myRecipeObject = RecipeSpoonacular(title = title, summary = summary,
+            readyInMinutes = time, sourceUrl = source, image = imageUrl)
         savedRecipes.add(myRecipeObject)
         val sharedPreferences = getSharedPreferences("shared preferences", Context.MODE_PRIVATE)
         val editor = sharedPreferences.edit()
@@ -86,5 +105,12 @@ class RecipeDetailsActivity : AppCompatActivity() {
         val intent = Intent()
         setResult(RESULT_OK, intent)
         super.onBackPressed()
+    }
+
+    // Start activity on browser with url
+    private fun sourceButtonClicked(button: View) {
+        val intent = Intent(Intent.ACTION_VIEW)
+        intent.data = Uri.parse(source)
+        startActivity(intent)
     }
 }

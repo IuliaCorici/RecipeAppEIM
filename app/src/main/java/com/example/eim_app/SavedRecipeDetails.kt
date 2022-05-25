@@ -7,12 +7,9 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.View
-import android.widget.Button
-import android.widget.LinearLayout
-import android.widget.ScrollView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 
@@ -23,12 +20,19 @@ class SavedRecipeDetails : AppCompatActivity() {
     lateinit var scrollView : ScrollView
     lateinit var ingredientText : TextView
     lateinit var deleteButton : Button
+    lateinit var sourceButton : Button
+    lateinit var timeButton : Button
+    lateinit var image : ImageView
+    lateinit var summaryText: TextView
 
     // Recipe info
-    var url : String? = ""
     var title : String? = ""
     var ingredients : MutableList<String>? = null
     var savedRecipes: ArrayList<RecipeSpoonacular> = ArrayList()
+    var source : String? = ""
+    var summary: String? = ""
+    var time: Int? = 0
+    var imageUrl: String? = ""
 
 
 
@@ -41,6 +45,10 @@ class SavedRecipeDetails : AppCompatActivity() {
         scrollView = findViewById(R.id.scrollView)
         ingredientText = scrollView.findViewById(R.id.ingredientText)
         deleteButton = findViewById(R.id.deleteButton)
+        sourceButton = findViewById(R.id.sourceButton)
+        timeButton = findViewById(R.id.timeButton)
+        image = findViewById(R.id.imageView)
+        summaryText = scrollView.findViewById(R.id.summaryText)
 
         val intent = intent
         val extras = intent.extras
@@ -50,7 +58,17 @@ class SavedRecipeDetails : AppCompatActivity() {
 
             ingredientText.text = ingredients?.joinToString("\n\n")
             labelText.text = title
+            summary = extras.getString("summary")
+            source = extras.getString("sourceUrl")
+            val content = ingredients?.joinToString("\n\n")
+            ingredientText.text = content
+            summaryText.text = summary
+            labelText.text = title
+            time = extras.getString("time")?.toInt()
+            timeButton.text = extras.getString("time")
+            imageUrl = extras.getString("image")
 
+            Glide.with(this).load(imageUrl).into(image);
             deleteButton.setOnClickListener() {
                 deleteRecipe(it)
             }

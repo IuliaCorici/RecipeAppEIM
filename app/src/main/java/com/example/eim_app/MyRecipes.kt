@@ -37,6 +37,10 @@ class MyRecipes : AppCompatActivity() {
                     val intent = Intent(this, SavedRecipeDetails::class.java)
                     intent.putExtra("title", recipe.title.toString())
                     intent.putExtra("ingredientLines", recipe.SpoonecularIngredientToString())
+                    intent.putExtra("time", recipe.readyInMinutes.toString())
+                    intent.putExtra("sourceUrl", recipe.sourceUrl)
+                    intent.putExtra("summary", recipe.summary)
+                    intent.putExtra("image", recipe.image)
                     startActivity(intent)
                 }
             }

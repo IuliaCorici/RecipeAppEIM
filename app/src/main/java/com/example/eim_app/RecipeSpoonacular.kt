@@ -3,7 +3,9 @@ package com.example.eim_app
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
-data class RecipeSpoonacular(var id: Int? = null, var title: String? = null, var image: String? = null, var missedIngredients: MutableList<IngredientSpoonacular>? = null) {
+data class RecipeSpoonacular(var title: String? = null, var readyInMinutes: Int? = null,
+                             var sourceUrl: String? = null, var summary: String?, var image: String? = null,
+                             var extendedIngredients: MutableList<IngredientSpoonacular>? = null) {
 
     override fun toString() : String {
         return "$title"
@@ -11,8 +13,8 @@ data class RecipeSpoonacular(var id: Int? = null, var title: String? = null, var
 
     fun SpoonecularIngredientToString() : String {
         var str = ""
-        if (missedIngredients != null) {
-            for(line in this!!.missedIngredients!!) {
+        if (extendedIngredients != null) {
+            for(line in this.extendedIngredients!!) {
                 str += line.toString() + "NEW"
             }
         }
