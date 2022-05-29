@@ -9,6 +9,7 @@ import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.net.toUri
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -33,6 +34,7 @@ class SavedRecipeDetails : AppCompatActivity() {
     var summary: String? = ""
     var time: Int? = 0
     var imageUrl: String? = ""
+    var imageUri: Uri? = null
 
 
 
@@ -68,7 +70,14 @@ class SavedRecipeDetails : AppCompatActivity() {
             timeButton.text = extras.getString("time")
             imageUrl = extras.getString("image")
 
-            Glide.with(this).load(imageUrl).into(image);
+            if (imageUrl == "" || imageUrl == null) {
+                imageUri = Uri.parse(extras.getString("imageUri"))
+                Glide.with(this).load(imageUri).into(image);
+
+            } else {
+                Glide.with(this).load(imageUrl).into(image);
+            }
+
             deleteButton.setOnClickListener() {
                 deleteRecipe(it)
             }

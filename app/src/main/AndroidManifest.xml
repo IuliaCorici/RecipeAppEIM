@@ -3,6 +3,9 @@
     package="com.example.eim_app">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -12,7 +15,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".SavedRecipeDetails"></activity>
+        <activity
+            android:name=".AddRecipeNew"
+            android:label="@string/title_activity_add_recipe_new"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".AddRecipe" />
+        <activity android:name=".SavedRecipeDetails" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".RecipeDetailsActivity" />
         <activity android:name=".MyRecipes" />
@@ -23,6 +31,16 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths" />
+        </provider>
     </application>
 
 </manifest>

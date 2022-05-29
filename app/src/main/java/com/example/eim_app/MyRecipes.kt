@@ -41,6 +41,7 @@ class MyRecipes : AppCompatActivity() {
                     intent.putExtra("sourceUrl", recipe.sourceUrl)
                     intent.putExtra("summary", recipe.summary)
                     intent.putExtra("image", recipe.image)
+                    intent.putExtra("imageUri", recipe.imageUri)
                     startActivity(intent)
                 }
             }

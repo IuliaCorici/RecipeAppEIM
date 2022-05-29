@@ -1,10 +1,12 @@
 package com.example.eim_app
 
+import android.net.Uri
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 data class RecipeSpoonacular(var title: String? = null, var readyInMinutes: Int? = null,
                              var sourceUrl: String? = null, var summary: String?, var image: String? = null,
+                             var imageUri: String? = null,
                              var extendedIngredients: MutableList<IngredientSpoonacular>? = null) {
 
     override fun toString() : String {

@@ -82,7 +82,6 @@ class SearchActivity : AppCompatActivity() {
                 listRecipeIds.add(it)
             }
 
-
             searchRecipeById()
         }
     }
@@ -103,7 +102,4 @@ class SearchActivity : AppCompatActivity() {
             }
         }
     }
-
-
-
 }

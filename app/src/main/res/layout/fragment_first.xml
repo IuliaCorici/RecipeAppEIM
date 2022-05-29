@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#C3DF9F"
+
+    android:orientation="vertical"
+    android:textAlignment="center"
+    tools:context=".FirstFragment">
+
+
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_margin="3dp"
+        android:fontFamily="casual"
+        android:gravity="center"
+        android:text="Add your own recipe"
+        android:textAlignment="center"
+        android:textColor="#37667E"
+        android:textSize="26dp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:id="@+id/innerLayoutNewRecipe"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <EditText
+
+            android:id="@+id/title_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:hint="Title recipe"
+            android:textColorLink="#59925A"
+            android:textCursorDrawable="?android:attr/textCursorDrawable"
+            android:textStyle="bold" />
+
+        <EditText
+
+            android:id="@+id/ready_in_minutes"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:hint="Ready in minutes"
+            android:textColorLink="#59925A"
+            android:textCursorDrawable="?android:attr/textCursorDrawable"
+            android:textStyle="bold" />
+
+        <EditText
+
+            android:id="@+id/summary_new_recipe"
+            android:layout_width="match_parent"
+            android:layout_height="108dp"
+            android:layout_weight="1"
+            android:fontFamily="casual"
+            android:hint="Summary"
+            android:textColorLink="#59925A"
+            android:textCursorDrawable="?android:attr/textCursorDrawable"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/add_recipe_image"
+            android:layout_width="216dp"
+            android:layout_height="100dp"
+            android:background="#0FD7CEDC"
+            android:contentDescription="TODO" />
+
+        <Button
+            android:id="@+id/addPhotoButton"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button_yellow"
+            android:fontFamily="casual"
+            android:includeFontPadding="false"
+            android:text="Add photo"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/button_first"
+            android:layout_width="190dp"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:layout_margin="5dp"
+            android:background="@drawable/rounded_button"
+            android:fontFamily="casual"
+            android:includeFontPadding="false"
+            android:text="NEXT"
+            android:textStyle="bold" />
+    </LinearLayout>
+
+
+</LinearLayout>
