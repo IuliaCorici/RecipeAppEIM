@@ -81,6 +81,11 @@ class SavedRecipeDetails : AppCompatActivity() {
             deleteButton.setOnClickListener() {
                 deleteRecipe(it)
             }
+
+            timeButton.setOnClickListener() {
+                val intent = Intent(this, Timer::class.java)
+                startActivity(intent)
+            }
         }
     }
 

@@ -15,10 +15,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Timer"></activity>
         <activity
             android:name=".AddRecipeNew"
             android:label="@string/title_activity_add_recipe_new"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".AddRecipe" />
         <activity android:name=".SavedRecipeDetails" />
         <activity android:name=".SearchActivity" />
