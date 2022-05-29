@@ -20,7 +20,6 @@
             android:name=".AddRecipeNew"
             android:label="@string/title_activity_add_recipe_new"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".AddRecipe" />
         <activity android:name=".SavedRecipeDetails" />
         <activity android:name=".SearchActivity" />
         <activity android:name=".RecipeDetailsActivity" />
@@ -42,6 +41,10 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+        <receiver
+            android:name=".TimerExpiredReceiver"
+            android:enabled="true"
+            android:exported="false"/>
     </application>
 
 </manifest>
