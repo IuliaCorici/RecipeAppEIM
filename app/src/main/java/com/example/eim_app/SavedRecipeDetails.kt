@@ -84,6 +84,8 @@ class SavedRecipeDetails : AppCompatActivity() {
 
             timeButton.setOnClickListener() {
                 val intent = Intent(this, Timer::class.java)
+                intent.putExtra("time", time)
+
                 startActivity(intent)
             }
         }

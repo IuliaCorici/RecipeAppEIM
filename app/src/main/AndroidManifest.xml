@@ -15,7 +15,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Timer"></activity>
+
+        <activity android:name=".Timer" />
         <activity
             android:name=".AddRecipeNew"
             android:label="@string/title_activity_add_recipe_new"
@@ -41,10 +42,22 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <receiver
             android:name=".TimerExpiredReceiver"
             android:enabled="true"
-            android:exported="false"/>
+            android:exported="false" />
+        <receiver
+            android:name=".TimerNotificationActionReceiver"
+            android:enabled="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="stop"/>
+                <action android:name="pause" />
+                <action android:name="resume" />
+                <action android:name="start" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

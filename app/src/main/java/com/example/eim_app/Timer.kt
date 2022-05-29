@@ -7,6 +7,9 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
+import android.util.Log
+import androidx.preference.PreferenceManager
+import androidx.preference.PreferenceManager.getDefaultSharedPreferences
 import kotlinx.android.synthetic.main.activity_timer.*
 import kotlinx.android.synthetic.main.content_timer_layout.*
 import java.util.*
@@ -49,6 +52,15 @@ class Timer : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
 
+        val intent = intent
+        val extras = intent.extras
+        if (extras != null) {
+            val time = extras.getInt("time")
+            val editor = getDefaultSharedPreferences(this).edit()
+            editor.putInt("time for recipe", time)
+            editor.apply()
+        }
+
 
         fab_start.setOnClickListener{v ->
             startTimer()
@@ -73,7 +85,7 @@ class Timer : AppCompatActivity() {
 
         initTimer()
         removeAlarm(this)
-        //TODO: hide notification
+        NotificationUtil.hideTimerNotification(this)
     }
 
     override fun onPause() {
@@ -82,10 +94,10 @@ class Timer : AppCompatActivity() {
         if (timerState == TimerState.Running){
             timer.cancel()
             val wakeUpTime = setAlarm(this, nowSeconds, secondsRemaining)
-            //TODO: show notification
+            NotificationUtil.showTimerRunning(this, wakeUpTime)
         }
         else if (timerState == TimerState.Paused){
-            //TODO: show notification
+            NotificationUtil.showTimerPaused(this)
         }
 
         PrefUtil.setPreviousTimerLengthSeconds(timerLengthSeconds, this)
@@ -96,8 +108,6 @@ class Timer : AppCompatActivity() {
     private fun initTimer(){
         timerState = PrefUtil.getTimerState(this)
 
-        //we don't want to change the length of the timer which is already running
-        //if the length was changed in settings while it was backgrounded
         if (timerState == TimerState.Stopped)
             setNewTimerLength()
         else
@@ -124,10 +134,7 @@ class Timer : AppCompatActivity() {
     private fun onTimerFinished(){
         timerState = TimerState.Stopped
 
-        //set the length of the timer to be the one set in SettingsActivity
-        //if the length was changed when the timer was running
         setNewTimerLength()
-
         progress_countdown.progress = 0
 
         PrefUtil.setSecondsRemaining(timerLengthSeconds, this)

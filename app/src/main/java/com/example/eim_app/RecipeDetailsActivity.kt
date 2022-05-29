@@ -59,10 +59,6 @@ class RecipeDetailsActivity : AppCompatActivity() {
             }
         }
 
-        timeButton.setOnClickListener() {
-            val intent = Intent(this, Timer::class.java)
-            startActivity(intent)
-        }
 
         val intent = intent
         val extras = intent.extras
@@ -82,6 +78,11 @@ class RecipeDetailsActivity : AppCompatActivity() {
             Glide.with(this).load(imageUrl).into(image);
             sourceButton.setOnClickListener() {
                 sourceButtonClicked(it)
+            }
+            timeButton.setOnClickListener() {
+                val intent = Intent(this, Timer::class.java)
+                intent.putExtra("time", time)
+                startActivity(intent)
             }
         }
     }
