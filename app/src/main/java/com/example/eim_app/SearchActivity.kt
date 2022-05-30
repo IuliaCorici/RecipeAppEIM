@@ -24,7 +24,7 @@ class SearchActivity : AppCompatActivity() {
 
     // How many items are showed to user. Default is 0-10.
     lateinit var numberItems : TextView
-    private var searchWord : String = ""
+    var searchWord : String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -61,11 +61,11 @@ class SearchActivity : AppCompatActivity() {
     private fun searchClicked(button: View) {
         numberItems.text = "Showing results"
         searchWord = searchBar.text.toString()
-        searchRecipes()
+        searchRecipes(searchWord)
     }
 
 
-    private fun searchRecipes() {
+    fun searchRecipes(searchWord: String) {
         val url =
             "https://api.spoonacular.com/recipes/findByIngredients?ingredients=${searchWord}&number=10&apiKey=00aa3e5f53d94aacb817e1cb5f2578c9"
 
@@ -86,10 +86,10 @@ class SearchActivity : AppCompatActivity() {
         }
     }
 
-    private fun searchRecipeById() {
+    fun searchRecipeById() {
         for (recipeId in listRecipeIds) {
             val url =
-                "https://api.spoonacular.com/recipes/${recipeId.toString()}/information?apiKey=00aa3e5f53d94aacb817e1cb5f2578c9&includeNutrition=true"
+                "https://api.spoonacular.com/recipes/$recipeId/information?apiKey=00aa3e5f53d94aacb817e1cb5f2578c9&includeNutrition=true"
 
             downloadUrlAsync(this, url) { it ->
 

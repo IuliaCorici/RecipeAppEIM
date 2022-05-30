@@ -9,10 +9,8 @@ class PrefUtil {
     companion object {
 
         fun getTimerLength(context: Context): Int{
-            //placeholder
             val preferences = getDefaultSharedPreferences(context)
             return preferences.getInt("time for recipe", 0)
-//            return 1
         }
 
         private const val PREVIOUS_TIMER_LENGTH_SECONDS_ID = "previous_timer_length_seconds"
@@ -27,7 +25,6 @@ class PrefUtil {
             editor.putLong(PREVIOUS_TIMER_LENGTH_SECONDS_ID, seconds)
             editor.apply()
         }
-
 
         private const val TIMER_STATE_ID = "timer_state"
 
